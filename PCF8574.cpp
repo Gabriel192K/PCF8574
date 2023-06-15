@@ -6,28 +6,60 @@ Purpose:  Constructor to PCF8574 class
 Input:    Reference to TWI class & address of PCF8574
 Return:   None
 *********************************************/
-PCF8574::PCF8574(__TWI__* twi, const uint8_t address)
+#if defined(ARDUINO)
+    PCF8574::PCF8574A(TwoWire* twi, const uint8_t address)
+#else
+    PCF8574::PCF8574A(__TWI__* twi, const uint8_t address)
+#endif
 {
-    this->twi = twi;
-    this->address = address;
+    this->twi = twi;         /* Set pointer to TWI class */
+    this->address = address; /* Get the device address */
 }
 
 /*********************************************
 Function: PCF8574A()
-Purpose:  Constructor to PCF8574 class
-Input:    Reference to TWI class & address of PCF8574
+Purpose:  Constructor to PCF8574A class
+Input:    Reference to TWI class & address of PCF8574A
 Return:   None
 *********************************************/
-PCF8574A::PCF8574A(__TWI__* twi, const uint8_t address)
+#if defined(ARDUINO)
+    PCF8574A::PCF8574A(TwoWire* twi, const uint8_t address)
+#else
+    PCF8574A::PCF8574A(__TWI__* twi, const uint8_t address)
+#endif
 {
-    this->twi = twi;
-    this->address = address;
+    this->twi = twi;         /* Set pointer to TWI class */
+    this->address = address; /* Get the device address */
+}
+
+/*********************************************
+Function: ~PCF8574()
+Purpose:  Destructor to PCF8574 class
+Input:    None
+Return:   None
+*********************************************/
+PCF8574::~PCF8574()
+{
+    this->twi = NULL;
+    this->address = 0x00;
+}
+
+/*********************************************
+Function: ~PCF8574A()
+Purpose:  Destructor to PCF8574A class
+Input:    None
+Return:   None
+*********************************************/
+PCF8574A::~PCF8574A()
+{
+    this->twi = NULL;
+    this->address = 0x00;
 }
 
 /*********************************************
 Function: begin()
 Purpose:  Begin communication with device
-Input:    TWI address of device
+Input:    None
 Return:   State of communication with device is successful or not
 *********************************************/
 uint8_t PCF8574::begin(void)
@@ -47,7 +79,7 @@ uint8_t PCF8574::begin(void)
 /*********************************************
 Function: begin()
 Purpose:  Begin communication with device
-Input:    TWI address of device
+Input:    None
 Return:   State of communication with device is successful or not
 *********************************************/
 uint8_t PCF8574A::begin(void)
@@ -72,9 +104,15 @@ Return:   Status of communication
 *********************************************/
 uint8_t PCF8574::isConnected(void)
 {
-    uint8_t state = this->twi->beginTransmission(address);
-    this->twi->endTransmission();
-    return (state);
+    #if defined(ARDUINO)
+        this->twi->beginTransmission(address);
+        uint8_t state = this->twi->endTransmission();
+        return (state == 0);
+    #else
+        uint8_t state = this->twi->beginTransmission(address);
+        this->twi->endTransmission();
+        return (state);
+    #endif
 }
 
 /*********************************************
@@ -85,9 +123,15 @@ Return:   Status of communication
 *********************************************/
 uint8_t PCF8574A::isConnected(void)
 {
-    uint8_t state = this->twi->beginTransmission(address);
-    this->twi->endTransmission();
-    return (state);
+    #if defined(ARDUINO)
+        this->twi->beginTransmission(address);
+        uint8_t state = this->twi->endTransmission();
+        return (state == 0);
+    #else
+        uint8_t state = this->twi->beginTransmission(address);
+        this->twi->endTransmission();
+        return (state);
+    #endif
 }
 
 /*********************************************

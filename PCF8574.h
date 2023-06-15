@@ -28,44 +28,76 @@
 */
 
 /* Dependecies */
-#include "TWI\TWI.h"
+#if defined(ARDUINO)
+    #include <Arduino.h>
+    #include <Wire.h>
+#else
+    #include "TWI\TWI.h"
+#endif
+
+/* Macros */
+#ifndef LOW
+#define LOW 0
+#endif
+#ifndef HIGH
+#define HIGH 1
+#endif
+#ifndef TOGGLE
+#define TOGGLE 2
+#endif
 
 class PCF8574
 {
     public:
-        PCF8574(__TWI__* twi, const uint8_t address);
-        uint8_t  begin      (void);
-        uint8_t  isConnected(void);
-        void     pinMode    (uint8_t pin, uint8_t mode);
-        uint8_t  read       (uint8_t pin);
-        uint8_t read        (void);
-        void     write      (uint8_t pin, uint8_t state);
-        void     write      (uint8_t state);
-        void     end        (void);
+        #if defined(ARDUINO)
+            PCF8574(TwoWire* twi, const uint8_t address);
+        #else
+            PCF8574(__TWI__* twi, const uint8_t address);
+        #endif
+        ~PCF8574();
+        uint8_t begin      (void);
+        uint8_t isConnected(void);
+        void    pinMode    (uint8_t pin, uint8_t mode);
+        uint8_t read       (uint8_t pin);
+        uint8_t read       (void);
+        void    write      (uint8_t pin, uint8_t state);
+        void    write      (uint8_t state);
+        void    end        (void);
     private:
-        uint8_t isOn;
-        __TWI__* twi;
+        #if defined(ARDUINO)
+            TwoWire* twi;
+        #else
+            __TWI__* twi;
+        #endif
         uint8_t address, direction, input, output;
-
+        uint8_t isOn;
 };
 
 class PCF8574A
 {
     public:
-        PCF8574A(__TWI__* twi, const uint8_t address);
-        uint8_t  begin      (void);
-        uint8_t  isConnected(void);
-        void     pinMode    (uint8_t pin, uint8_t mode);
-        uint8_t  read       (uint8_t pin);
-        uint8_t  read       (void);
-        void     write      (uint8_t pin, uint8_t state);
-        void     write      (uint8_t state);
-        void     end        (void);
+        #if defined(ARDUINO)
+            PCF8574A(TwoWire* twi, const uint8_t address);
+        #else
+            PCF8574A(__TWI__* twi, const uint8_t address);
+        #endif
+        ~PCF8574A();
+        uint8_t begin      (void);
+        uint8_t isConnected(void);
+        void    pinMode    (uint8_t pin, uint8_t mode);
+        uint8_t read       (uint8_t pin);
+        uint8_t read       (void);
+        void    write      (uint8_t pin, uint8_t state);
+        void    write      (uint8_t state);
+        void    end        (void);
     private:
-        uint8_t isOn;
-        __TWI__* twi;
+        #if defined(ARDUINO)
+            TwoWire* twi;
+        #else
+            __TWI__* twi;
+        #endif
         uint8_t address, direction, input, output;
-
+        uint8_t isOn;
 };
 
 #endif
