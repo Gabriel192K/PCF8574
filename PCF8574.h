@@ -29,8 +29,8 @@
 
 /* Dependecies */
 #if defined(ARDUINO)
-    #include <Arduino.h>
-    #include <Wire.h>
+    #include "Arduino.h"
+    #include "Wire.h"
 #else
     #include "TWI\TWI.h"
 #endif

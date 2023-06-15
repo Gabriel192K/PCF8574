@@ -7,9 +7,9 @@ Input:    Reference to TWI class & address of PCF8574
 Return:   None
 *********************************************/
 #if defined(ARDUINO)
-    PCF8574::PCF8574A(TwoWire* twi, const uint8_t address)
+    PCF8574::PCF8574(TwoWire* twi, const uint8_t address)
 #else
-    PCF8574::PCF8574A(__TWI__* twi, const uint8_t address)
+    PCF8574::PCF8574(__TWI__* twi, const uint8_t address)
 #endif
 {
     this->twi = twi;         /* Set pointer to TWI class */
