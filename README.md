@@ -4,6 +4,9 @@ PCF8584 implementation for AVR platform
 # Compatible with both PCF8574 & PCF8574A
 The only difference is that their TWI address ranges differ
 
+# Compatible with Arduino IDE & Microchip Studio (Atmel Studio)
+Minor changes due to TWI library implementation differences
+
 ## PCF8584 is an 8 bit IO Expander(multiplexer & demultiplexer) capable of communicating with the MCU via a TWI bus
 
 ## Key features
