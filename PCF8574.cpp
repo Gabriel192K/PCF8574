@@ -188,11 +188,11 @@ Return:   Whole IO bus of the device
 *********************************************/
 uint8_t PCF8574::read(void)
 {
-    if (!this->isOn)                                   /* Check if device is not ON */
+    if (!this->isOn)                                            /* Check if device is not ON */
         return (0);
-    if (this->address < 0x20 || this->address > 0x27)  /* Check if device's specified address is out of bounds */
+    if (this->address < 0x20 || this->address > 0x27)           /* Check if device's specified address is out of bounds */
         return (0);
-    if (this->twi->requestFrom(this->address, 1) != 1) /* Check if request was successful */
+    if (this->twi->requestFrom(this->address, (uint8_t)1) != 1) /* Check if request was successful */
         return(0);
     this->input = (uint8_t)this->twi->read();
     this->twi->endTransmission();
@@ -207,11 +207,11 @@ Return:   Whole IO bus of the device
 *********************************************/
 uint8_t PCF8574A::read(void)
 {
-    if (!this->isOn)                                   /* Check if device is not ON */
+    if (!this->isOn)                                            /* Check if device is not ON */
         return (0);
-    if (this->address < 0x38 || this->address > 0x3F)  /* Check if device's specified address is out of bounds */
+    if (this->address < 0x38 || this->address > 0x3F)           /* Check if device's specified address is out of bounds */
         return (0);
-    if (this->twi->requestFrom(this->address, 1) != 1) /* Check if request was successful */
+    if (this->twi->requestFrom(this->address, (uint8_t)1) != 1) /* Check if request was successful */
         return(0);
     this->input = (uint8_t)this->twi->read();
     this->twi->endTransmission();
