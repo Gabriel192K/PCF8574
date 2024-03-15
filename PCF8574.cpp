@@ -146,5 +146,6 @@ Return:   None
 *********************************************/
 void PCF8574::end(void)
 {
-    this->twi->end();
+    for (uint8_t bit = 0; bit < 8; bit++)
+        this->setMode(bit, INPUT);
 }
