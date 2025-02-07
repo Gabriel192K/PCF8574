@@ -1,7 +1,6 @@
 /* Dependencies */
 #include <TWI.h>
 
-/* Macros */
 #ifndef LOW
 #define LOW (const uint8_t)0 /**< Macro definition for LOW state (0) */
 #endif
