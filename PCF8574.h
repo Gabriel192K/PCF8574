@@ -32,12 +32,10 @@ class PCF8574
         const uint8_t read(void);
         const uint8_t write(const uint8_t pin, const uint8_t state);
         const uint8_t write(const uint8_t data);
-        const uint8_t end(void);
 
     private:
         uint8_t address;                   //< The I2C address of the PCF8574 device
         __TWI__* twi;                      //< Pointer to the TWI (I2C) interface for communication
-        uint8_t began;                     //< Flag indicating whether the device has been initialized
         uint8_t inputBuffer, outputBuffer; //< Buffers for reading and writing data to the PCF8574
 };
 

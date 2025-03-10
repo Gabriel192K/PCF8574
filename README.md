@@ -13,8 +13,27 @@ A lightweight C++ library to control the **PCF8574 I/O Expander** over I2C/TWI, 
 
 ## 🚀 Usage
 
-### 1. Initialization
-
 ```cpp
-PCF8574 pcf;
-pcf.begin(0x20); // Replace 0x20 with your device's address
+/* Dependencies */
+#include "PCF8574.h"
+
+/* Macros */
+#define PCF8574_TWI_ADDRESS (const uint8_t)0x38
+#define PCF8574_TWI_BUS     TWI
+
+/* Instances */
+PCF8574 pcf8574(PCF8574_TWI_ADDRESS, PCF8574_TWI_BUS);
+
+int main(void)
+{
+    const uint8_t is_connected = pcf8574.begin();
+    while (1)
+    {
+        const uint8_t pin_state = pcf8574.read(0);
+        const uint8_t pins_state = pcf8574.read();
+        pcf8574.write(1, TOGGLE);
+        pcf8574.write(0b10100101);
+    }
+    return (0);
+}
+```

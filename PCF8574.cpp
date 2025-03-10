@@ -47,10 +47,6 @@ PCF8574::~PCF8574()
  */
 const uint8_t PCF8574::begin(void)
 {
-    if (this->began)
-        return (0);
-    this->began = 1;
-
     this->inputBuffer = 0x00;  //< Initialize the input buffer to 0
     this->outputBuffer = 0x00; //< Initialize the output buffer to 0
 
@@ -183,28 +179,3 @@ const uint8_t PCF8574::write(const uint8_t data)
     this->twi->write(this->outputBuffer);        //< Write the byte of data
     return (this->twi->endTransmission());       //< End the transmission and return the result
 }
-
-
-/**
- * @brief Ends communication with the PCF8574 I/O expander.
- * 
- * This method stops communication with the PCF8574 device by resetting the internal 
- * flags and buffers. It marks the instance as not initialized, ensuring that the device 
- * is no longer active. The input and output buffers are cleared.
- * 
- * @return uint8_t
- * - 1 if the operation was successful (communication ended).
- * - 0 if the device was not initialized and could not be ended.
- */
-const uint8_t PCF8574::end(void)
-{
-    if (!this->began)
-        return (0);
-    this->began = 0;
-    
-    this->inputBuffer = 0x00;
-    this->outputBuffer = 0x00;
-
-    return (1);
-}
-
