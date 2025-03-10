@@ -16,8 +16,8 @@
  */
 PCF8574::PCF8574(const uint8_t address, __TWI__* twi)
 {
-    this->address = address; /**< Set the I2C address of the PCF8574 device */
-    this->twi = twi;         /**< Store the pointer to the TWI interface for communication */
+    this->address = address; //< Set the I2C address of the PCF8574 device
+    this->twi = twi;         //< Store the pointer to the TWI interface for communication
 }
 
 
@@ -29,8 +29,8 @@ PCF8574::PCF8574(const uint8_t address, __TWI__* twi)
  */
 PCF8574::~PCF8574()
 {
-    this->address = 0xFF; /**< Reset the I2C address to an invalid value (0xFF) */
-    this->twi = NULL;     /**< Set the TWI interface pointer to NULL */
+    this->address = 0x00; //< Reset the I2C address to an invalid value
+    this->twi = NULL;     //< Set the TWI interface pointer to NULL
 }
 
 
@@ -48,14 +48,14 @@ PCF8574::~PCF8574()
 const uint8_t PCF8574::begin(void)
 {
     if (this->began)
-        return (0); /**< If the device has already been initialized, return 0 */
-    this->began = 1; /**< Mark the device as initialized */
+        return (0);
+    this->began = 1;
 
-    this->inputBuffer = 0x00; /**< Initialize the input buffer to 0 */
-    this->outputBuffer = 0x00; /**< Initialize the output buffer to 0 */
+    this->inputBuffer = 0x00;  //< Initialize the input buffer to 0
+    this->outputBuffer = 0x00; //< Initialize the output buffer to 0
 
-    this->twi->begin(); /**< Start the I2C communication */
-    return (this->isConnected()); /**< Check if the device is connected and return the result */
+    this->twi->begin();
+    return (this->isConnected()); //< Check if the device is connected and return the result
 }
 
 
@@ -71,8 +71,8 @@ const uint8_t PCF8574::begin(void)
  */
 const uint8_t PCF8574::isConnected(void)
 {
-    this->twi->beginTransmission(this->address); /**< Start the I2C transmission to the device */
-    return (this->twi->endTransmission() == TW_MT_SLA_ACK); /**< Check if the device acknowledged the connection */
+    this->twi->beginTransmission(this->address);            //< Start the I2C transmission to the device
+    return (this->twi->endTransmission() == TW_MT_SLA_ACK); //< Check if the device acknowledged the connection
 }
 
 
@@ -93,10 +93,10 @@ const uint8_t PCF8574::isConnected(void)
  */
 const uint8_t PCF8574::read(const uint8_t pin)
 {
-    if (pin > 7) /**< Check if the pin number is within the valid range (0-7) */
-        return (0); /**< Return 0 if the pin number is invalid */
+    if (pin >= PCF8574_MAX_PINS) //< Check if the pin number is valid (0-7)
+        return (0);
     
-    return ((this->read() >> pin) & 1); /**< Read the pin state by shifting and masking */
+    return ((this->read() >> pin) & 1); //< Read the pin state by shifting and masking
 }
 
 
@@ -114,12 +114,11 @@ const uint8_t PCF8574::read(const uint8_t pin)
  */
 const uint8_t PCF8574::read(void)
 {
-    if (this->twi->requestFrom(address, (const uint8_t)1) != 1) /**< Check if data is successfully requested from the device */
-        return (this->inputBuffer); /**< Return the previous input buffer if the request fails */
+    if (this->twi->requestFrom(address, (const uint8_t)1) != 1) //< Check if data is successfully requested from the device
+        return (this->inputBuffer);
     
-    this->inputBuffer = this->twi->read(); /**< Read the input data and store it in the input buffer */
-    
-    return (this->inputBuffer); /**< Return the current input buffer with the updated pin states */
+    this->inputBuffer = this->twi->read(); //< Read the input data and store it in the input buffer
+    return (this->inputBuffer);
 }
 
 
@@ -143,25 +142,24 @@ const uint8_t PCF8574::read(void)
  */
 const uint8_t PCF8574::write(const uint8_t pin, const uint8_t state)
 {
-    if (pin > 7) /**< Check if the pin number is valid (0-7) */
-        return (0); /**< Return 0 for invalid pin number */
+    if (pin >= PCF8574_MAX_PINS) //< Check if the pin number is valid (0-7)
+        return (0);
     
-    switch (state) /**< Perform an action based on the state provided */
+    switch (state)
     {
         case LOW:
-            this->outputBuffer = this->outputBuffer & ~(1 << pin); /**< Set the pin to LOW (0) */
+            this->outputBuffer = this->outputBuffer & ~(1 << pin);
             break;
         case HIGH:
-            this->outputBuffer = this->outputBuffer | (1 << pin); /**< Set the pin to HIGH (1) */
+            this->outputBuffer = this->outputBuffer | (1 << pin);
             break;
         case TOGGLE:
-            this->outputBuffer = this->outputBuffer ^ (1 << pin); /**< Toggle the pin's state */
+            this->outputBuffer = this->outputBuffer ^ (1 << pin);
             break;
         default:
-            return (0); /**< Return 0 if an invalid state is provided */
+            return (0);
     }
-
-    return (this->write(this->outputBuffer)); /**< Write the updated output buffer to the device */
+    return (this->write(this->outputBuffer));
 }
 
 
@@ -180,10 +178,10 @@ const uint8_t PCF8574::write(const uint8_t pin, const uint8_t state)
  */
 const uint8_t PCF8574::write(const uint8_t data)
 {
-    this->outputBuffer = data; /**< Store the data in the output buffer */
-    this->twi->beginTransmission(this->address); /**< Begin I2C transmission with the device */
-    this->twi->write((const uint8_t)this->outputBuffer); /**< Write the byte of data */
-    return (this->twi->endTransmission()); /**< End the transmission and return the result */
+    this->outputBuffer = data;                   //< Store the data in the output buffer
+    this->twi->beginTransmission(this->address); //< Begin I2C transmission with the device
+    this->twi->write(this->outputBuffer);        //< Write the byte of data
+    return (this->twi->endTransmission());       //< End the transmission and return the result
 }
 
 
@@ -200,14 +198,13 @@ const uint8_t PCF8574::write(const uint8_t data)
  */
 const uint8_t PCF8574::end(void)
 {
-    if (!this->began) /**< Check if the device was not initialized */
-        return (0); /**< Return 0 if the device was not initialized */
+    if (!this->began)
+        return (0);
+    this->began = 0;
     
-    this->began = 0; /**< Mark the device as no longer initialized */
-    
-    this->inputBuffer = 0x00; /**< Clear the input buffer */
-    this->outputBuffer = 0x00; /**< Clear the output buffer */
+    this->inputBuffer = 0x00;
+    this->outputBuffer = 0x00;
 
-    return (1); /**< Return 1 to indicate successful operation */
+    return (1);
 }
 
