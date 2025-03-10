@@ -37,3 +37,11 @@ int main(void)
     return (0);
 }
 ```
+
+## Compatibility
+
+Expects a ```__TWI__``` type of class for the ***TWI(I2C)*** communication so ***it is not*** directly compatible with ***Arduino IDE's Wire*** implementation. Future updates may include this if tested.
+
+For now it is fully compatible with ***Arduino IDE*** and ***Microchip Studio IDE*** using this ***TWI*** implementation
+[TWI](https://github.com/Gabriel192K/TWI).
+
